@@ -4,10 +4,11 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import de.identpro.wookie.model.Role;
-import de.identpro.wookie.model.User;
+import de.identpro.wookie.model.dto.LoginDTO;
+import de.identpro.wookie.model.entity.Author;
 
 import io.smallrye.jwt.build.Jwt;
+import io.smallrye.jwt.build.JwtClaimsBuilder;
 
 import jakarta.enterprise.context.RequestScoped;
 
@@ -19,14 +20,25 @@ import org.slf4j.LoggerFactory;
 public class TokenGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(TokenGenerator.class);
 
-    public String generateUserJWT(final User user) {
-        return Jwt.issuer("https://identpro.de")
-                  .groups(new HashSet<>(Arrays.asList(Role.AUTHOR.name(), Role.ADMIN.name())))
-                  .claim(Claims.preferred_username.name(), user.username)
-                  .claim(Claims.nickname.name(), user.authorPseudonym)
-                  .issuedAt(Instant.now())
-                  .expiresIn(600)
-                  .sign();
+    public LoginDTO generateUserJWT(final Author user) {
+        try {
+            // Create an empty builder and add some claims
+            final JwtClaimsBuilder builder = Jwt.claims();
+            builder.claim(Claims.preferred_username.name(), user.authorName);
+            builder.groups(new HashSet<>(Arrays.asList(user.authorRole.name())));
+            builder.upn("test");
+/*            builder.issuer("https://identpro.de");*/
+            builder.issuedAt(Instant.now());
+            builder.expiresIn(600L);
+
+            final String jwt = builder.jws().innerSign().encrypt();
+            LOG.info("Generated Json Web Token {}", jwt);
+
+            return LoginDTO.builder().token(jwt).build();
+        } catch (final Exception e) {
+            LOG.error("generateUserJWT Error {}", e.getMessage());
+        }
+        return null;
     }
 
 }
