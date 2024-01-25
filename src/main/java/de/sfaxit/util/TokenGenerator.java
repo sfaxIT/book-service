@@ -1,11 +1,11 @@
-package de.identpro.wookie.util;
+package de.sfaxit.util;
 
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import de.identpro.wookie.model.dto.LoginDTO;
-import de.identpro.wookie.model.entity.Author;
+import de.sfaxit.model.dto.LoginDTO;
+import de.sfaxit.model.entity.Author;
 
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;

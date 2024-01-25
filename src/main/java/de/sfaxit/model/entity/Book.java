@@ -1,6 +1,12 @@
-package de.identpro.wookie.model.entity;
+package de.sfaxit.model.entity;
+
+
+import java.sql.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
+
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
@@ -24,6 +30,7 @@ import lombok.Setter;
 @RegisterForReflection(ignoreNested = false)
 @Schema(properties = @SchemaProperty(name = "bookId", type = SchemaType.STRING, description = "ID of the published book"), requiredProperties = "bookId")
 public class Book extends PanacheEntityBase {
+    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";
 
     @Id
     @Column(name = "book_id", nullable = false, length = 50)
@@ -45,6 +52,11 @@ public class Book extends PanacheEntityBase {
     @Column(name = "book_price")
     @Schema(description = "Sell price of the published book")
     public Double bookPrice;
+
+    @Column(name = "publish_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+    @Schema(description = "Published date of a book - ISO 8601 representation (UTC)", example = "2024-01-01T10:00:00Z")
+    public Date publishDate;
 
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "author_id", nullable = false, insertable = false, updatable = false)

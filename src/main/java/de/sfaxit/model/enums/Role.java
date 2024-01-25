@@ -1,4 +1,4 @@
-package de.identpro.wookie.model.enums;
+package de.sfaxit.model.enums;
 
 public enum Role {
     AUTHOR, ADMIN

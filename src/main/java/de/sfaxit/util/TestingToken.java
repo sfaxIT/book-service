@@ -1,4 +1,4 @@
-package de.identpro.wookie.util;
+package de.sfaxit.util;
 
 import java.time.Instant;
 

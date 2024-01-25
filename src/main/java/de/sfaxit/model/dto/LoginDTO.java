@@ -1,4 +1,4 @@
-package de.identpro.wookie.model.dto;
+package de.sfaxit.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

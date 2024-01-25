@@ -1,4 +1,4 @@
-package de.identpro.wookie.model.dto;
+package de.sfaxit.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 
-import de.identpro.wookie.model.enums.Role;
+import de.sfaxit.model.enums.Role;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
