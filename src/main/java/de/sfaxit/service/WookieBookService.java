@@ -1,10 +1,12 @@
-package de.identpro.wookie.service;
+package de.sfaxit.service;
 
-import de.identpro.wookie.model.enums.Role;
-import de.identpro.wookie.model.dto.LoginDTO;
-import de.identpro.wookie.model.entity.Author;
-import de.identpro.wookie.util.TokenGenerator;
+import de.sfaxit.model.entity.Book;
+import de.sfaxit.model.enums.Role;
+import de.sfaxit.model.dto.LoginDTO;
+import de.sfaxit.model.entity.Author;
+import de.sfaxit.util.TokenGenerator;
 
+import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -12,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static io.quarkus.hibernate.orm.panache.PanacheEntityBase.find;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class WookieBookService {
@@ -52,6 +57,22 @@ public class WookieBookService {
             LOG.error("registerUser Error {}", e.getMessage());
         }
         return null;
+    }
+
+    public List<Book> findAllBooks() {
+        final List<Book> result = new ArrayList<>();
+
+        var page = Book.findAll()
+                       .page(Page.ofSize(100));
+
+        result.addAll(page.list());
+
+        while (page.hasNextPage()) {
+            page = page.nextPage();
+            result.addAll(page.list());
+        }
+
+        return result;
     }
 
 }

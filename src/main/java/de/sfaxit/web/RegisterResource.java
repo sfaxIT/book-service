@@ -1,10 +1,10 @@
-package de.identpro.wookie.web;
+package de.sfaxit.web;
 
-import de.identpro.wookie.model.enums.Role;
-import de.identpro.wookie.model.dto.LoginDTO;
-import de.identpro.wookie.model.dto.UserDTO;
-import de.identpro.wookie.model.entity.Author;
-import de.identpro.wookie.service.WookieBookService;
+import de.sfaxit.model.enums.Role;
+import de.sfaxit.model.dto.LoginDTO;
+import de.sfaxit.model.dto.UserDTO;
+import de.sfaxit.model.entity.Author;
+import de.sfaxit.service.WookieBookService;
 
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;

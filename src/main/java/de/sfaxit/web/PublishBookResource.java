@@ -1,4 +1,4 @@
-package de.identpro.wookie.web;
+package de.sfaxit.web;
 
 public class PublishBookResource {
 }

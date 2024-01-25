@@ -1,4 +1,4 @@
-package de.identpro.wookie.model.entity;
+package de.sfaxit.model.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
-import de.identpro.wookie.model.enums.Role;
+import de.sfaxit.model.enums.Role;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.annotations.RegisterForReflection;
