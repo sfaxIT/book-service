@@ -8,11 +8,6 @@
     <artifactId>book-service</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <organization>
-        <name>IdentPro GmbH</name>
-        <url>https://identpro.de</url>
-    </organization>
-
     <properties>
         <surefire-plugin.version>3.2.5</surefire-plugin.version>
 
