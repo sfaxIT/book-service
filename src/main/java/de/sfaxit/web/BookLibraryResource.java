@@ -30,14 +30,14 @@ public class BookLibraryResource {
     @APIResponse(responseCode = "500", description = "Internal Server Error")
     public Response getAllBooks() {
         final List<Book> allBooks = this.service.findAllBooks();
-
+ 
         return Response.ok(allBooks)
                        .build();
     }
 
 /*    @GET
     @Path("/search")
-    @Operation(description = "Searche for all active productionOrder instances by productionOrderId, name or description containing the provided term implementing page-based pagination", summary = "Searches for productionOrder instances by given term")
+    @Operation(description = "Search for all active productionOrder instances by productionOrderId, name or description containing the provided term implementing page-based pagination", summary = "Searches for productionOrder instances by given term")
     @APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/PagedCollectionResponse")))
     @APIResponse(responseCode = "401", description = "In case of unauthorized access attempts")
     public Response pageBasedSearch(@RestQuery @DefaultValue(EMPTY) final String tenantId,
