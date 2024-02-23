@@ -3,8 +3,8 @@ package de.sfaxit.util;
 import java.time.Instant;
 
 import io.smallrye.jwt.build.Jwt;
-
 import io.smallrye.jwt.build.JwtClaimsBuilder;
+
 import org.eclipse.microprofile.jwt.Claims;
 
 public class TestingToken {
@@ -13,7 +13,7 @@ public class TestingToken {
         final JwtClaimsBuilder builder = Jwt.claims();
         builder.claim(Claims.preferred_username.name(), "username");
         builder.upn("test");
-        builder.issuer("https://identpro.de");
+        builder.issuer("https://sfaxit.de");
         builder.issuedAt(Instant.now());
         builder.expiresIn(600L);
 

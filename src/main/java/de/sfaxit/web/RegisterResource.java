@@ -4,7 +4,7 @@ import de.sfaxit.model.enums.Role;
 import de.sfaxit.model.dto.LoginDTO;
 import de.sfaxit.model.dto.UserDTO;
 import de.sfaxit.model.entity.Author;
-import de.sfaxit.service.WookieBookService;
+import de.sfaxit.service.BookService;
 
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
@@ -28,7 +28,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 public class RegisterResource {
 
     @Inject
-    WookieBookService service;
+    BookService service;
 
     @POST
     @Path("/register")
@@ -96,7 +96,8 @@ public class RegisterResource {
 
         final LoginDTO jwtDto = this.service.getUserToken(registeredUser);
         if (jwtDto != null) {
-            return Response.ok(jwtDto).build();
+            return Response.ok(jwtDto)
+                           .build();
         }
 
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
