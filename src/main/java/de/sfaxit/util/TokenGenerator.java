@@ -27,7 +27,7 @@ public class TokenGenerator {
             builder.claim(Claims.preferred_username.name(), user.authorName);
             builder.groups(new HashSet<>(Arrays.asList(user.authorRole.name())));
             builder.upn("test");
-/*            builder.issuer("https://identpro.de");*/
+            builder.issuer("https://sfaxit.de");
             builder.issuedAt(Instant.now());
             builder.expiresIn(600L);
 
