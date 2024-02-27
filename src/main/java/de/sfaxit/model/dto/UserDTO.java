@@ -22,26 +22,26 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserDTO {
-
-    @Schema(description = "Username of the author")
-    private final String username;
-
-    @Schema(description = "Password of the author", required = true)
-    private final String password;
-
-    @Builder.Default
-    @JsonSetter(nulls = Nulls.SKIP)
-    @Schema(description = "Role of the author", defaultValue = "AUTHOR")
-    private Role role = Role.AUTHOR;
-
-    private String userId;
-
-    @JsonCreator
-    public UserDTO(@JsonProperty(value = "username", required = true) final String username,
-                   @JsonProperty(value = "password", required = true) final String password) {
-        this.username = username;
-        this.password = password;
-        this.role = Role.AUTHOR;
-    }
-
+	
+	@Schema(description = "Username of the author")
+	private final String username;
+	
+	@Schema(description = "Password of the author", required = true)
+	private final String password;
+	
+	@Builder.Default
+	@JsonSetter(nulls = Nulls.SKIP)
+	@Schema(description = "Role of the author", defaultValue = "AUTHOR")
+	private Role role = Role.AUTHOR;
+	
+	private String userId;
+	
+	@JsonCreator
+	public UserDTO(@JsonProperty(value = "username", required = true) final String username,
+	               @JsonProperty(value = "password", required = true) final String password) {
+		this.username = username;
+		this.password = password;
+		this.role = Role.AUTHOR;
+	}
+	
 }

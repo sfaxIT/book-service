@@ -42,55 +42,55 @@ import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
 @RegisterForReflection(ignoreNested = false)
 @Schema(properties = @SchemaProperty(name = "authorId", type = SchemaType.STRING, description = "ID of the author"), requiredProperties = "authorId")
 public class Author extends PanacheEntityBase {
-
-    @Id
-    @Column(name = "author_id", nullable = false, length = 50)
-    @Schema(description = "Unique id of the author")
-    public String authorId;
-
-    @Column(name = "author_username")
-    @NotNull
-    @Size(max = 50)
-    @Schema(description = "Username of the author", required = true)
-    public String authorName;
-
-    @Column(name = "author_password")
-    @NotNull
-    @Size(max = 50)
-    @Schema(description = "Password of the author", required = true)
-    public String authorPassword;
-
-    @Column(name = "author_role")
-    @Size(max = 50)
-    @Builder.Default
-    @JsonSetter(nulls = Nulls.SKIP)
-    @Schema(description = "Role of the author", defaultValue = "AUTHOR")
-    public Role authorRole = Role.AUTHOR;
-
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<Book> authorBooks = new HashSet<>();
-
-    public void addBook(final Book book) {
-        getAuthorBooks().add(book);
-        book.setAuthor(this);
-    }
-
-    public void removeBook(final Book book) {
-        getAuthorBooks().remove(book);
-        book.setAuthor(null);
-    }
-
-    public static Author findByName(final String username) {
-        return find("authorName", username).firstResult();
-    }
-
-    @JsonCreator
-    public Author(@JsonProperty(value = "username", required = true) final String username,
-                  @JsonProperty(value = "password", required = true) final String password) {
-        this.authorName = username;
-        this.authorPassword = password;
-        this.authorRole = Role.AUTHOR;
-        this.authorBooks = new HashSet<>();
-    }
-
+	
+	@Id
+	@Column(name = "author_id", nullable = false, length = 50)
+	@Schema(description = "Unique id of the author")
+	public String authorId;
+	
+	@Column(name = "author_username")
+	@NotNull
+	@Size(max = 50)
+	@Schema(description = "Username of the author", required = true)
+	public String authorName;
+	
+	@Column(name = "author_password")
+	@NotNull
+	@Size(max = 50)
+	@Schema(description = "Password of the author", required = true)
+	public String authorPassword;
+	
+	@Column(name = "author_role")
+	@Size(max = 50)
+	@Builder.Default
+	@JsonSetter(nulls = Nulls.SKIP)
+	@Schema(description = "Role of the author", defaultValue = "AUTHOR")
+	public Role authorRole = Role.AUTHOR;
+	
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	private Set<Book> authorBooks = new HashSet<>();
+	
+	public void addBook(final Book book) {
+		getAuthorBooks().add(book);
+		book.setAuthor(this);
+	}
+	
+	public void removeBook(final Book book) {
+		getAuthorBooks().remove(book);
+		book.setAuthor(null);
+	}
+	
+	public static Author findByName(final String username) {
+		return find("authorName", username).firstResult();
+	}
+	
+	@JsonCreator
+	public Author(@JsonProperty(value = "username", required = true) final String username,
+	              @JsonProperty(value = "password", required = true) final String password) {
+		this.authorName = username;
+		this.authorPassword = password;
+		this.authorRole = Role.AUTHOR;
+		this.authorBooks = new HashSet<>();
+	}
+	
 }
