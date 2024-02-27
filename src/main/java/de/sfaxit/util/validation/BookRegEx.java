@@ -20,11 +20,11 @@ import jakarta.validation.Payload;
 @Documented
 @Constraint(validatedBy = BookRegExValidator.class)
 public @interface BookRegEx {
-
-    String message() default "Provided value isn't a proper regular expression";
-
-    Class<?>[] groups() default {};
-
-    Class<? extends Payload>[] payload() default {};
-
+	
+	String message() default "Provided value isn't a proper regular expression";
+	
+	Class<?>[] groups() default {};
+	
+	Class<? extends Payload>[] payload() default {};
+	
 }

@@ -20,11 +20,11 @@ import java.util.List;
 @NoArgsConstructor
 @RegisterForReflection(ignoreNested = false)
 public class SearchResultHolderDTO {
-
-    private List<Book> books;
-    private int currentPage;
-    private int pageSize;
-    private int pageCount;
-    private long totalCount;
-
+	
+	private List<Book> books;
+	private int currentPage;
+	private int pageSize;
+	private int pageCount;
+	private long totalCount;
+	
 }
