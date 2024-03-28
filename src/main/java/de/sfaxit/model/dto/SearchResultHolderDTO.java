@@ -1,7 +1,5 @@
 package de.sfaxit.model.dto;
 
-import de.sfaxit.model.entity.Book;
-
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 import lombok.AccessLevel;
@@ -21,7 +19,8 @@ import java.util.List;
 @RegisterForReflection(ignoreNested = false)
 public class SearchResultHolderDTO {
 	
-	private List<Book> books;
+	private List<BookDTO> books;
+	private List<UserDTO> users;
 	private int currentPage;
 	private int pageSize;
 	private int pageCount;

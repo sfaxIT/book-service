@@ -12,7 +12,6 @@ import io.smallrye.jwt.build.JwtClaimsBuilder;
 
 import jakarta.enterprise.context.RequestScoped;
 
-import org.eclipse.microprofile.jwt.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,21 +23,31 @@ public class TokenGenerator {
 		try {
 			// Create an empty builder and add some claims
 			final JwtClaimsBuilder builder = Jwt.claims();
-			builder.claim(Claims.preferred_username.name(), user.authorName);
-			builder.groups(new HashSet<>(Arrays.asList(user.authorRole.name())));
-			builder.upn("test");
+			builder.subject(user.username);
+/*			builder.groups(user.authorRole);*/
+/*			builder.claim("pwd", user.pwd);*/
+			builder.groups(new HashSet<>(Arrays.asList(user.authorRole)));
+/*			builder.upn("test");
 			builder.issuer("https://sfaxit.de");
-			builder.issuedAt(Instant.now());
-			builder.expiresIn(600L);
+			builder.issuedAt(Instant.now());*/
+/*			builder.expiresIn(600L);*/
 			
-			final String jwt = builder.jws()
+/*			final String jwt = builder.jws()
 			                          .innerSign()
-			                          .encrypt();
+			                          .encrypt();*/
+			
+			final String jwt = Jwt.subject(user.getUsername())
+			                      .issuer("https://sfaxit.de")
+			                      .groups(new HashSet<>(Arrays.asList(user.authorRole)))
+			                      .expiresIn(600L)
+			                      .sign();
+			
 			LOG.info("Generated Json Web Token {}", jwt);
 			
 			return LoginDTO.builder()
 			               .token(jwt)
 			               .build();
+			
 		} catch (final Exception e) {
 			LOG.error("generateUserJWT Error {}", e.getMessage());
 		}
