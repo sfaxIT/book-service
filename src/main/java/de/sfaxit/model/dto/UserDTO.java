@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 
-import de.sfaxit.model.enums.Role;
+import de.sfaxit.model.dto.enums.UserRole;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -31,17 +31,17 @@ public class UserDTO {
 	
 	@Builder.Default
 	@JsonSetter(nulls = Nulls.SKIP)
-	@Schema(description = "Role of the author", defaultValue = "AUTHOR")
-	private Role role = Role.AUTHOR;
+	@Schema(description = "Role of the user", defaultValue = "AUTHOR")
+	private UserRole userRole = UserRole.AUTHOR;
 	
-	private String userId;
+	private Long userId;
 	
 	@JsonCreator
 	public UserDTO(@JsonProperty(value = "username", required = true) final String username,
 	               @JsonProperty(value = "password", required = true) final String password) {
 		this.username = username;
 		this.password = password;
-		this.role = Role.AUTHOR;
+		this.userRole = UserRole.AUTHOR;
 	}
 	
 }

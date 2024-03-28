@@ -15,13 +15,16 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
+/**
+ * Custom book search term validator
+ */
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
 @Documented
-@Constraint(validatedBy = BookRegExValidator.class)
-public @interface BookRegEx {
+@Constraint(validatedBy = BookSearchValidator.class)
+public @interface ValidBookSearch {
 	
-	String message() default "Provided value isn't a proper regular expression";
+	String message() default "Provided value must be a proper regular expression";
 	
 	Class<?>[] groups() default {};
 	
