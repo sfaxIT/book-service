@@ -8,6 +8,7 @@ import de.sfaxit.service.BookService;
 import de.sfaxit.model.dto.SearchResultHolderDTO;
 import de.sfaxit.util.validation.ValidBookSearch;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.Min;
 import jakarta.ws.rs.Consumes;
@@ -33,6 +34,7 @@ public class BookLibraryResource {
 	
 	@GET
 	@Path("all")
+	@RolesAllowed({"ADMIN", "AUTHOR", "READER"})
 	@Operation(description = "Retrieve a list of all books from the library", summary = "Retrieve all library books")
 	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/PagedCollectionResponseDTO")))
 	@APIResponse(responseCode = "400", description = "In case the provided request contains an empty library")
@@ -53,7 +55,8 @@ public class BookLibraryResource {
 	
 	@GET
 	@Path("search")
-	@Operation(description = "Search for all books instances by book title, description, price or author name containing the provided term implementing page-based pagination", summary = "Search for book instances by given term")
+	@RolesAllowed({"ADMIN", "AUTHOR", "READER"})
+	@Operation(description = "Search for all books instances by book title, description, price or subscriber name containing the provided term implementing page-based pagination", summary = "Search for book instances by given term")
 	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/PagedCollectionResponseDTO")))
 	@APIResponse(responseCode = "400", description = "In case the provided request contains an empty table")
 	@APIResponse(responseCode = "500", description = "Internal Server Error")

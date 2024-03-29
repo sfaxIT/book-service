@@ -5,12 +5,12 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-@Schema(description = "User kind of roles")
-public enum UserRole {
+@Schema(description = "Several kind of roles for book library users")
+public enum SubscriberRole {
 	
-	AUTHOR("author"), ADMIN("admin");
+	AUTHOR("author"), ADMIN("admin"), READER("reader"), BANNED("banned");
 	
-	UserRole(String name) {
+	SubscriberRole(String name) {
 		this.name = name;
 	}
 	
@@ -20,7 +20,7 @@ public enum UserRole {
 		return this.name;
 	}
 	
-	public static UserRole of(final String name) {
+	public static SubscriberRole of(final String name) {
 		if (name != null) {
 			return Stream.of(values())
 			             .filter(u -> StringUtils.equalsIgnoreCase(u.getName(), name))

@@ -41,7 +41,7 @@ public class Book extends PanacheEntityBase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "book_id", nullable = false, length = 50)
-	@Schema(description = "Unique id of the published author book")
+	@Schema(description = "Unique id of the published subscriber book")
 	public Long bookId;
 	
 	@Column(name = "book_title")
@@ -67,8 +67,8 @@ public class Book extends PanacheEntityBase {
 	public String publishDate;
 	
 	@ManyToOne
-	@JoinColumn(name = "author_id", referencedColumnName = "author_id", nullable = false)
-	public Author author;
+	@JoinColumn(name = "subscriber_id", referencedColumnName = "subscriber_id", nullable = false)
+	public Subscriber subscriber;
 	
 	public static PanacheQuery<Book> findByTitle(final String searchByTerm, final String termValue, final Integer pageSize) {
 		return Book.find(searchByTerm, termValue)
@@ -79,7 +79,7 @@ public class Book extends PanacheEntityBase {
 	public String toString() {
 		return "Book {" + "bookId=" + bookId + ", title='" + title + '\'' + ", description='" + description + '\'' +
 		       ", coverImage=" + Arrays.toString(coverImage) + ", price=" + price + ", publishDate='" + publishDate +
-		       '\'' + ", author=" + author + '}';
+		       '\'' + ", subscriber=" + subscriber + '}';
 	}
 	
 }

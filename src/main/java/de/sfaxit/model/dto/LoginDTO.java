@@ -17,6 +17,6 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginDTO {
 	
-	@Schema(description = "User JWT")
+	@Schema(description = "Subscriber JWT")
 	private String token;
 }

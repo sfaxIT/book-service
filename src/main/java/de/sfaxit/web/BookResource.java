@@ -5,9 +5,9 @@ import static jakarta.ws.rs.core.Response.Status;
 
 import de.sfaxit.model.dto.BookDTO;
 import de.sfaxit.model.dto.CollectionResponseDTO;
-import de.sfaxit.model.entity.Author;
+import de.sfaxit.model.entity.Subscriber;
 import de.sfaxit.model.entity.Book;
-import de.sfaxit.service.AuthorService;
+import de.sfaxit.service.SubscriberService;
 import de.sfaxit.service.BookService;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -24,7 +24,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.core.Response;
 
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -44,33 +43,34 @@ public class BookResource {
 	BookService bookService;
 	
 	@Inject
-	AuthorService authorService;
+	SubscriberService subscriberService;
 	
 	@Inject
 	JsonWebToken accessToken;
 	
 	@POST
 	@RolesAllowed({ "AUTHOR", "ADMIN" })
-	@Operation(operationId = "create", description = "Create new book instances for the authenticated author", summary = "Create new book instances")
+	@Operation(operationId = "create", description = "Create new book instances for the authenticated subscriber", summary = "Create new book instances")
 	@APIResponse(responseCode = "201", description = "In case of successful access attempts. Returns id of the generated message.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO.class)))
 	@APIResponse(responseCode = "400", description = "In case the provided request body doesn't contain a non-empty bookId or the provided bookId already exists")
 	@APIResponse(responseCode = "401", description = "In case of unauthorized access attempts")
+	@APIResponse(responseCode = "403", description = "In case of forbidden access attempts")
 	public Response publishBook(@NotNull @Valid final BookDTO dto) {
-		final Author author = this.authorService.findByUsername(accessToken.getSubject());
-		final Long authorId = author.authorId;
+		final Subscriber subscriber = this.subscriberService.findBySubscriberName(accessToken.getSubject());
+		final Long subscriberId = subscriber.subscriberId;
 		
-		if (authorId == null) {
+		if (subscriberId == null) {
 			return Response.status(Status.UNAUTHORIZED)
-			               .entity("User not found in database")
+			               .entity("Subscriber not found in database")
 			               .build();
 		}
 		
-		// Prevent the user with the username sfaxit to publish any book0
-		if (StringUtils.equals(accessToken.getSubject(), "sfaxit")) {
+		// Prevent the subscriber with the username sfaxit to publish any book0
+/*		if (StringUtils.equals(accessToken.getSubject(), "sfaxit")) {
 			return Response.status(Status.FORBIDDEN)
-			               .entity("User with username " + accessToken.getSubject() + " is not allowed to publish any book")
+			               .entity("Subscriber with username " + accessToken.getSubject() + " is not allowed to publish any book")
 			               .build();
-		}
+		}*/
 		
 		if (dto.getBookId() != null && this.bookService.bookExists(dto.getBookId())) {
 			return Response.status(Status.BAD_REQUEST)
@@ -78,7 +78,7 @@ public class BookResource {
 			               .build();
 		}
 		
-		dto.setAuthorId(authorId);
+		dto.setSubscriberId(subscriberId);
 		final BookDTO persistedBook = this.bookService.publishBook(dto);
 		if (persistedBook != null) {
 			return Response.status(Status.CREATED)
@@ -96,6 +96,7 @@ public class BookResource {
 	@APIResponse(responseCode = "204", description = "In case of successful access attempts")
 	@APIResponse(responseCode = "400", description = "In case the requested id and the bookId provided in the request body don't match")
 	@APIResponse(responseCode = "401", description = "In case of unauthorized access attempts")
+	@APIResponse(responseCode = "403", description = "In case of forbidden access attempts")
 	@APIResponse(responseCode = "404", description = "In case the requested entity is unknown yet")
 	public Response updateBook(@Valid @NotNull final BookDTO dto) {
 		if (dto.getBookId() == null) {
@@ -124,18 +125,19 @@ public class BookResource {
 	
 	@GET
 	@RolesAllowed({ "AUTHOR", "ADMIN" })
-	@Operation(operationId = "get", description = "Retrieve published books requested by authenticated author", summary = "Retrieve own published books")
+	@Operation(operationId = "get", description = "Retrieve published books requested by authenticated subscriber", summary = "Retrieve own published books")
 	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO.class)))
 	@APIResponse(responseCode = "401", description = "In case of unauthorized access attempts")
+	@APIResponse(responseCode = "403", description = "In case of forbidden access attempts")
 	public Response getAuthorBooks() {
-		final Author authorEntity = this.authorService.findByUsername(accessToken.getSubject());
-		if (authorEntity == null) {
+		final Subscriber subscriberEntity = this.subscriberService.findBySubscriberName(accessToken.getSubject());
+		if (subscriberEntity == null) {
 			return Response.status(Status.NOT_FOUND)
-			               .entity("author not found in database")
+			               .entity("subscriber not found in database")
 			               .build();
 		}
 		
-		final List<BookDTO> authorBooks = this.bookService.getBooksByAuthor(authorEntity);
+		final List<BookDTO> authorBooks = this.bookService.getBooksByAuthor(subscriberEntity);
 		
 		return Response.status(Status.OK)
 		               .entity(CollectionResponseDTO.of(authorBooks))
@@ -148,6 +150,7 @@ public class BookResource {
 	@APIResponse(responseCode = "204", description = "In case of successful access attempts")
 	@APIResponse(responseCode = "400", description = "In case the requested id is empty")
 	@APIResponse(responseCode = "401", description = "In case of unauthorized access attempts")
+	@APIResponse(responseCode = "403", description = "In case of forbidden access attempts")
 	@APIResponse(responseCode = "404", description = "In case the requested entity is unknown yet")
 	public Response unpublishBook(@RestQuery("id") final Long id) {
 		if (id == null) {
@@ -163,12 +166,12 @@ public class BookResource {
 		}
 		
 		final Book entity = this.bookService.getBook(id);
-		final Author authorEntity = this.authorService.findByUsername(accessToken.getSubject());
-		final Long authorId = authorEntity.authorId;
+		final Subscriber subscriberEntity = this.subscriberService.findBySubscriberName(accessToken.getSubject());
+		final Long authorId = subscriberEntity.subscriberId;
 		
-		if (!this.authorService.isBookAuthorValid(entity, authorId)) {
+		if (!this.subscriberService.isBookSubscriberValid(entity, authorId)) {
 			return Response.status(Status.FORBIDDEN)
-			               .entity("User with id " + authorId + " is not allowed to delete the book with id " + id)
+			               .entity("Subscriber with id " + authorId + " is not allowed to delete the book with id " + id)
 			               .build();
 		}
 		

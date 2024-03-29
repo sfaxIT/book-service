@@ -1,11 +1,10 @@
 package de.sfaxit.util;
 
-import java.time.Instant;
+import de.sfaxit.model.entity.Subscriber;
 import java.util.Arrays;
 import java.util.HashSet;
 
 import de.sfaxit.model.dto.LoginDTO;
-import de.sfaxit.model.entity.Author;
 
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
@@ -19,14 +18,14 @@ import org.slf4j.LoggerFactory;
 public class TokenGenerator {
 	private static final Logger LOG = LoggerFactory.getLogger(TokenGenerator.class);
 	
-	public LoginDTO generateUserJWT(final Author user) {
+	public LoginDTO generateSubscriberJWT(final Subscriber subscriber) {
 		try {
 			// Create an empty builder and add some claims
 			final JwtClaimsBuilder builder = Jwt.claims();
-			builder.subject(user.username);
-/*			builder.groups(user.authorRole);*/
-/*			builder.claim("pwd", user.pwd);*/
-			builder.groups(new HashSet<>(Arrays.asList(user.authorRole)));
+			builder.subject(subscriber.subscriberName);
+/*			builder.groups(subscriber.authorRole);*/
+/*			builder.claim("pwd", subscriber.pwd);*/
+			builder.groups(new HashSet<>(Arrays.asList(subscriber.subscriberRole)));
 /*			builder.upn("test");
 			builder.issuer("https://sfaxit.de");
 			builder.issuedAt(Instant.now());*/
@@ -36,9 +35,9 @@ public class TokenGenerator {
 			                          .innerSign()
 			                          .encrypt();*/
 			
-			final String jwt = Jwt.subject(user.getUsername())
+			final String jwt = Jwt.subject(subscriber.getSubscriberName())
 			                      .issuer("https://sfaxit.de")
-			                      .groups(new HashSet<>(Arrays.asList(user.authorRole)))
+			                      .groups(new HashSet<>(Arrays.asList(subscriber.subscriberRole)))
 			                      .expiresIn(600L)
 			                      .sign();
 			
