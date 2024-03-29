@@ -20,7 +20,7 @@ import java.util.List;
 public class SearchResultHolderDTO {
 	
 	private List<BookDTO> books;
-	private List<UserDTO> users;
+	private List<SubscriberDTO> users;
 	private int currentPage;
 	private int pageSize;
 	private int pageCount;

@@ -62,7 +62,7 @@ public class BookDTO {
 	public String publishDate;
 	
 	private Long bookId;
-	private Long authorId;
+	private Long subscriberId;
 	
 	@JsonCreator
 	public BookDTO(@JsonProperty(value = "title", required = true) final String title,
@@ -80,7 +80,7 @@ public class BookDTO {
 	public String toString() {
 		return "BookDTO {" + "title='" + title + '\'' + ", description='" + description + '\'' + ", cover=" +
 		       Arrays.toString(cover) + ", price=" + price + ", publishDate='" + publishDate + '\'' + ", bookId=" +
-		       bookId + ", authorId=" + authorId + '}';
+		       bookId + ", subscriberId=" + subscriberId + '}';
 	}
 	
 }

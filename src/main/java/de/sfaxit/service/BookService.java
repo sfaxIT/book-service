@@ -5,7 +5,7 @@ import static org.apache.commons.collections4.CollectionUtils.emptyIfNull;
 
 import de.sfaxit.model.dto.BookDTO;
 import de.sfaxit.model.entity.Book;
-import de.sfaxit.model.entity.Author;
+import de.sfaxit.model.entity.Subscriber;
 import de.sfaxit.model.dto.SearchResultHolderDTO;
 import de.sfaxit.util.BookPersister;
 
@@ -111,7 +111,7 @@ public class BookService {
 	public BookDTO publishBook(final BookDTO dtoToPersist) {
 		final Book bookEntityToPersist = this.mapDtoToEntity(dtoToPersist);
 
-		final Book dbBook = this.persister.addBook(bookEntityToPersist, dtoToPersist.getAuthorId());
+		final Book dbBook = this.persister.addBook(bookEntityToPersist, dtoToPersist.getSubscriberId());
 
 		return this.mapBookEntityToDto(dbBook);
 	}
@@ -126,7 +126,7 @@ public class BookService {
 		return null;
 	}
 	
-	private Book  mapDtoToEntity(final BookDTO dto) {
+	private Book mapDtoToEntity(final BookDTO dto) {
 		if (dto != null) {
 			final BigDecimal bookPrice = dto.getPrice() != null ? this.computeBookPrice(dto.getPrice()) : null;
 			
@@ -150,7 +150,7 @@ public class BookService {
 		if (entity != null) {
 			return BookDTO.builder()
 			              .bookId(entity.bookId)
-			              .authorId(entity.author.authorId)
+			              .subscriberId(entity.subscriber.subscriberId)
 			              .title(entity.title)
 			              .description(entity.description)
 			              .price(entity.price.toString())
@@ -174,18 +174,18 @@ public class BookService {
 		return this.persister.updateBook(dto);
 	}
 	
-	public List<BookDTO> getBooksByAuthor(final Author author) {
-		final Set<Book> dbBooks = author.getAuthorBooks();
+	public List<BookDTO> getBooksByAuthor(final Subscriber subscriber) {
+		final Set<Book> dbBooks = subscriber.getSubscriberBooks();
 		
-		final List<BookDTO> authorBooks = new ArrayList<>();
+		final List<BookDTO> subscriberBooks = new ArrayList<>();
 		
 		emptyIfNull(dbBooks).forEach(entity -> {
 			final BookDTO dto = this.mapBookEntityToDto(entity);
 			
-			authorBooks.add(dto);
+			subscriberBooks.add(dto);
 		});
 		
-		return authorBooks;
+		return subscriberBooks;
 	}
 	
 	public Book getBook(final Long id) {
@@ -193,16 +193,7 @@ public class BookService {
 	}
 	
 	public boolean deleteBook(final Long bookId) {
-		try {
-			final Book bookToDelete = Book.findById(bookId);
-			if (bookToDelete.isPersistent()) {
-				this.persister.delete(bookToDelete);
-				return true;
-			}
-		} catch (final Exception e) {
-			LOG.error("Error deleteBook with id " + bookId + " {}", e.getMessage());
-		}
-		return false;
+		return this.persister.delete(bookId);
 	}
 	
 }
