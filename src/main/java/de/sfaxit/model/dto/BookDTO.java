@@ -9,11 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.Nulls;
 
-import io.quarkus.runtime.annotations.RegisterForReflection;
-
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -34,16 +32,14 @@ import java.util.HexFormat;
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
-@RegisterForReflection(ignoreNested = false)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BookDTO {
 	
-	@Min(20)
-	@Max(50)
-	@Schema(description = "Book title")
+	@Size(min = 5, max = 50, message = "Title size must be between 5 and 50 characters")
+	@Schema(description = "Book title", required = true)
 	private String title;
 	
-	@Max(200)
+	@Size(min = 10, max = 200, message = "Book description size must be between 5 and 200 characters")
 	@Schema(description = "Book description")
 	private String description;
 	
@@ -53,8 +49,9 @@ public class BookDTO {
 	private byte[] cover = HexFormat.ofDelimiter(":")
 	                                .parseHex("e0:4f:d0:20:ea:3a:69:10:a2:d8:08:00:2b:30:30:9d");
 	
-	@Schema(description = "Book price")
+	@Schema(description = "Book price", required = true)
 	@Positive
+	@NotBlank(message = "Book price cannot be blank")
 	private String price;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)

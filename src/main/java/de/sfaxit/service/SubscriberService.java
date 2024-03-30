@@ -48,8 +48,8 @@ public class SubscriberService {
 		return StringUtils.equals(subscriber.subscriberPassword, pwd);
 	}
 	
-	public Subscriber registerSubscriber(final String subscriberName, final String subscriberPassword, final SubscriberRole subscriberRole) {
-		return this.persister.addSubscriber(subscriberName, subscriberPassword, subscriberRole);
+	public Subscriber registerSubscriber(final SubscriberDTO dto) {
+		return this.persister.addSubscriber(dto.getUsername(), dto.getPassword(), dto.getSubscriberRole());
 	}
 	
 	public LoginDTO getSubscriberToken(@NotNull final Subscriber subscriber) {

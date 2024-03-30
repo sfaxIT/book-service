@@ -49,7 +49,7 @@ public class BookResource {
 	JsonWebToken accessToken;
 	
 	@POST
-	@RolesAllowed({ "AUTHOR", "ADMIN" })
+	@RolesAllowed({"AUTHOR", "ADMIN"})
 	@Operation(operationId = "create", description = "Create new book instances for the authenticated subscriber", summary = "Create new book instances")
 	@APIResponse(responseCode = "201", description = "In case of successful access attempts. Returns id of the generated message.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO.class)))
 	@APIResponse(responseCode = "400", description = "In case the provided request body doesn't contain a non-empty bookId or the provided bookId already exists")
@@ -64,13 +64,6 @@ public class BookResource {
 			               .entity("Subscriber not found in database")
 			               .build();
 		}
-		
-		// Prevent the subscriber with the username sfaxit to publish any book0
-/*		if (StringUtils.equals(accessToken.getSubject(), "sfaxit")) {
-			return Response.status(Status.FORBIDDEN)
-			               .entity("Subscriber with username " + accessToken.getSubject() + " is not allowed to publish any book")
-			               .build();
-		}*/
 		
 		if (dto.getBookId() != null && this.bookService.bookExists(dto.getBookId())) {
 			return Response.status(Status.BAD_REQUEST)
@@ -91,7 +84,7 @@ public class BookResource {
 	}
 	
 	@PUT
-	@RolesAllowed({ "AUTHOR", "ADMIN" })
+	@RolesAllowed({"AUTHOR", "ADMIN"})
 	@Operation(operationId = "update", description = "Update an existing book instance", summary = "Update a book")
 	@APIResponse(responseCode = "204", description = "In case of successful access attempts")
 	@APIResponse(responseCode = "400", description = "In case the requested id and the bookId provided in the request body don't match")
@@ -124,7 +117,7 @@ public class BookResource {
 	}
 	
 	@GET
-	@RolesAllowed({ "AUTHOR", "ADMIN" })
+	@RolesAllowed({"AUTHOR", "ADMIN"})
 	@Operation(operationId = "get", description = "Retrieve published books requested by authenticated subscriber", summary = "Retrieve own published books")
 	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO.class)))
 	@APIResponse(responseCode = "401", description = "In case of unauthorized access attempts")
@@ -145,7 +138,7 @@ public class BookResource {
 	}
 	
 	@DELETE
-	@RolesAllowed({ "AUTHOR", "ADMIN" })
+	@RolesAllowed({"AUTHOR", "ADMIN"})
 	@Operation(operationId = "delete", description = "Delete an existing book instance", summary = "Delete a book")
 	@APIResponse(responseCode = "204", description = "In case of successful access attempts")
 	@APIResponse(responseCode = "400", description = "In case the requested id is empty")
