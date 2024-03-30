@@ -7,8 +7,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 
 import de.sfaxit.model.dto.enums.SubscriberRole;
+import de.sfaxit.util.validation.PasswordRegex;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -29,12 +30,13 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SubscriberDTO {
 	
-	@Schema(description = "Username of the subscriber")
-	@NotNull
+	@Schema(description = "Username of the subscriber", required = true)
+	@NotBlank(message = "Username cannot be blank")
 	private String username;
 	
 	@Schema(description = "Password of the subscriber", required = true)
-	@NotNull
+	@NotBlank
+	@PasswordRegex
 	private String password;
 	
 	@Builder.Default

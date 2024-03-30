@@ -24,7 +24,7 @@ import jakarta.validation.Payload;
 @Constraint(validatedBy = BookSearchValidator.class)
 public @interface ValidBookSearch {
 	
-	String message() default "Provided value must be a proper regular expression";
+	String message() default "Provided search term value must be a proper regular expression";
 	
 	Class<?>[] groups() default {};
 	
