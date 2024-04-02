@@ -51,7 +51,7 @@ public class BookResource {
 	@POST
 	@RolesAllowed({"AUTHOR", "ADMIN"})
 	@Operation(operationId = "create", description = "Create new book instances for the authenticated subscriber", summary = "Create new book instances")
-	@APIResponse(responseCode = "201", description = "In case of successful access attempts. Returns id of the generated message.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO.class)))
+	@APIResponse(responseCode = "201", description = "In case of successful access attempts. Returns id of the generated message.")
 	@APIResponse(responseCode = "400", description = "In case the provided request body doesn't contain a non-empty bookId or the provided bookId already exists")
 	@APIResponse(responseCode = "401", description = "In case of unauthorized access attempts")
 	@APIResponse(responseCode = "403", description = "In case of forbidden access attempts")
@@ -119,7 +119,7 @@ public class BookResource {
 	@GET
 	@RolesAllowed({"AUTHOR", "ADMIN"})
 	@Operation(operationId = "get", description = "Retrieve published books requested by authenticated subscriber", summary = "Retrieve own published books")
-	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO.class)))
+	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/CollectionResponse")))
 	@APIResponse(responseCode = "401", description = "In case of unauthorized access attempts")
 	@APIResponse(responseCode = "403", description = "In case of forbidden access attempts")
 	public Response getAuthorBooks() {

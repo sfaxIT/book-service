@@ -69,9 +69,8 @@ public class SubscriberResource {
 	@GET
 	@Path("/login")
 	@Operation(description = "Retrieve the json web token for login", summary = "Retrieve the jwt")
-	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LoginDTO.class)))
+	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/LoginDTO")))
 	@APIResponse(responseCode = "400", description = "In case the provided username or password is empty or password is wrong")
-	@APIResponse(responseCode = "404", description = "In case the requested entity is unknown yet")
 	@APIResponse(responseCode = "500", description = "Internal Server Error")
 	public Response login(@RestQuery @NotBlank final String username, @RestQuery @NotBlank final String password) {
 		if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
@@ -108,7 +107,7 @@ public class SubscriberResource {
 	@Path("/all")
 	@RolesAllowed({"ADMIN"})
 	@Operation(operationId = "get", description = "Retrieve registered users requested by authenticated admin", summary = "Retrieve all users")
-	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriberDTO.class)))
+	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/PagedCollectionResponse")))
 	@APIResponse(responseCode = "401", description = "In case of unauthorized access attempts")
 	@APIResponse(responseCode = "403", description = "In case of forbidden access attempts")
 	@APIResponse(responseCode = "500", description = "Internal Server Error")

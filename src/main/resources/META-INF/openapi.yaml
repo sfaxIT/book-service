@@ -1,20 +1,41 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
-  title: wookieBooks
-  description: wookieBooks
+  title: Books Library API
+  description: CRUD operations for all interactions behind the books library
   version: 1.0.0
-servers:
-  - url: https://server.com
-    description: New server
-  - url: 'https'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
 paths:
-  /url:
+  /subscriber/login:
     get:
-      description: New endpoint
+      summary: Returns a user json web token (jwt).
+      parameters:
+        - in: query
+          name: username
+          schema:
+            type: string
+          description: subscriber username
+        - in: query
+          name: password
+          schema:
+            type: string
+          description: Subscriber password
       responses:
-        200:
-          description: New response
+        '200':
+          description: Success
+          $ref: '#/components/schemas/LoginDTO'
           content:
             application/json:
-              schema:
+        '400':
+          description: Bad request. The provided username or password is empty or password is wrong.
+        '5XX':
+          description: Unexpected error.
+
+servers:
+  - url: "http://localhost:8686"
+    description: API url
+
   
