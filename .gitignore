@@ -36,3 +36,4 @@ pom.xml.versionsBackup
 release.properties
 
 /.mvn/wrapper/maven-wrapper.jar
+/.42c/conf.yaml

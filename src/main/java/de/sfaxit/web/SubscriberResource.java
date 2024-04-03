@@ -43,7 +43,7 @@ public class SubscriberResource {
 	@POST
 	@Path("/register")
 	@Operation(description = "Register a subscriber with required data", summary = "Register a subscriber")
-	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriberDTO.class)))
+	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(ref= "#/components/schemas/SubscriberDTO")))
 	@APIResponse(responseCode = "400", description = "In case the provided username or password is empty")
 	@APIResponse(responseCode = "409", description = "In case the given username conflicts with an existing one")
 	@APIResponse(responseCode = "500", description = "Internal Server Error")
@@ -136,8 +136,8 @@ public class SubscriberResource {
 	@PUT
 	@Path("/ban")
 	@RolesAllowed({"ADMIN"})
-	@Operation(operationId = "put", description = "Ban registered users requested by authenticated admin", summary = "Ban user")
-	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubscriberDTO.class)))
+	@Operation(operationId = "put", description = "Ban registered users requested by authorized admin", summary = "Ban user")
+	@APIResponse(responseCode = "200", description = "In case of successful access attempts", content = @Content(mediaType = "application/json", schema = @Schema(ref= "#/components/schemas/SubscriberDTO")))
 	@APIResponse(responseCode = "401", description = "In case of unauthorized access attempts")
 	@APIResponse(responseCode = "403", description = "In case of forbidden access attempts")
 	@APIResponse(responseCode = "500", description = "Internal Server Error")

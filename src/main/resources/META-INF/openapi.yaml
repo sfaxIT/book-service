@@ -1,41 +1,162 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
   title: Books Library API
   description: CRUD operations for all interactions behind the books library
   version: 1.0.0
 components:
   securitySchemes:
-    BearerAuth:
+    bearerAuth:
       type: http
       scheme: bearer
+      bearerFormat: JWT
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  schemas:
+    LoginDTO:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJtYXN0ZXIiLCJpc3MiOiJodHRwczovL3NmYXhpdC5kZSIsImdyb3VwcyI6WyJBRE1JTiJdLC
+      required:
+        - token
+    SubscriberDTO:
+      type: object
+      properties:
+        username:
+          type: string
+          example: author1
+        password:
+          type: string
+          example: P@ssword123
+        subscriberRole:
+          type: string
+          example: AUTHOR
+      required:
+        - username
+        - password
+    BookDTO:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Artificial Intelligence
+        description:
+          type: string
+          example: Introduction into AI
+        cover:
+          type: string
+          example: e0:4f:d0:20:ea:3a:69:10:a2:d8:08:00:2b:30:30:9d
+        price:
+          type: string
+          example: 19.99
+        publishDate:
+          type: string
+          example: 2024-01-01T10:00:00Z
+        bookId:
+          type: integer
+          example: 1
+    CollectionResponseDTO:
+      type: object
+      properties:
+        collection:
+          type: array
+    PagedCollectionResponseDTO:
+      type: object
+      properties:
+        collection:
+          type: array
+        pages:
+          type: integer
+          example: 2
+        currentPage:
+          type: integer
+          example: 1
+        records:
+          type: integer
+          example: 5
+    SearchResultHolderDTO:
+      type: object
+      properties:
+        books:
+          type: array
+        users:
+          type: array
+        currentPage:
+          type: integer
+        pageSize:
+          type: integer
+        pageCount:
+          type: integer
+        totalCount:
+          type: integer
 paths:
   /subscriber/login:
     get:
-      summary: Returns a user json web token (jwt).
+      summary: Returns a user json web token (jwt) for authentication.
+      security: []
       parameters:
         - in: query
           name: username
           schema:
             type: string
-          description: subscriber username
+          description: subscriber username.
         - in: query
           name: password
           schema:
             type: string
-          description: Subscriber password
+          description: Subscriber password.
       responses:
         '200':
-          description: Success
-          $ref: '#/components/schemas/LoginDTO'
+          description: LoginDTO object.
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/LoginDTO'
         '400':
           description: Bad request. The provided username or password is empty or password is wrong.
         '5XX':
           description: Unexpected error.
-
+  /subscriber/register:
+    post:
+      summary: Register a subscriber with required data.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriberDTO'
+      responses:
+        '200':
+          description: ok
+        '400':
+          description: The provided username or password is empty
+        '409':
+          description: The given username conflicts with an existing one.
+        '500':
+          description: Internal Server Error.
+  /subscriber/ban:
+    put:
+      summary: Ban registered users requested by authorized admin.
+      security: []
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: string
+          description: id of user to ban.
+      responses:
+        '200':
+          $ref: '#/components/schemas/SubscriberDTO'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error.
 servers:
   - url: "http://localhost:8686"
-    description: API url
-
+    description: Localhost API url
+security:
+  - bearerAuth: []
   
