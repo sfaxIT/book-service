@@ -1,5 +1,5 @@
 pipeline {
-    agent sfaxit-agent-1
+    agent {label 'sfaxit-agent-1'}
 
     stages {
         stage('Build') {
