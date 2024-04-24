@@ -3,7 +3,10 @@ pipeline {
 
     stages {
         stage('Build') {
-            steps {
+        when {
+            branch "sfaxit-*"
+        }
+        steps {
                 bat 'mvn clean install'
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
